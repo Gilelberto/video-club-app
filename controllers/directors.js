@@ -16,7 +16,7 @@ function create (req, res, next) {
 
 function list (req, res, next) {
     //res.send('Directors list');
-    Director.findAll().then(object => res.json(object))
+    Director.findAll({include: ['movies']}).then(object => res.json(object))
     .catch(err => res.send(err));
 }
 

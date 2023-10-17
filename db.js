@@ -1,52 +1,86 @@
 const Sequelize = require('sequelize');
+
 const directorModel = require('./models/director');
 const genreModel = require('./models/genre');
 const movieModel = require('./models/movie');
-const movie = require('./models/movie');
-
-/*  
-    ELEMENTOS PARA LA CONEXIÓN:
-
-    1) NOMBRE DE LA BASE DE DATOS
-    2) USUARIO
-    3) CONTRASEÑA
-    4) OBJETO DE CONFIGURACIÓN DEL ORM
+const actorModel = require('./models/actor');
+const memberModel = require('./models/member');
+const movieActorModel = require('./models/movieActors');
+const bookingModel = require('./models/booking');
+const copyModel = require('./models/copy');
+/*
+    1) Nombre base de datos
+    2) Usuario base de datos
+    3) Contraseña base de datos
+    4) Objeto de configuracion ORM
 */
 
-
-//sequelize el orm tiene de  requisito que ya exista la base de datos.
-                                //nombre bd, usuario, contraseña
-const sequelize = new Sequelize('video-club','root','abcd1234',{
-    host: '127.0.0.1',
+const sequelize = new Sequelize('video-club', 'root', 'abcd1234', {
+    host: 'localhost',
     dialect: 'mysql'
 });
 
+const Director = directorModel(sequelize, Sequelize);
+const Genre = genreModel(sequelize, Sequelize);
+const Movie = movieModel(sequelize, Sequelize);
+const Actor = actorModel(sequelize, Sequelize);
+const Member = memberModel(sequelize, Sequelize);
+const MovieActor = movieActorModel(sequelize, Sequelize);
+const Booking = bookingModel(sequelize,Sequelize);
+const Copy = copyModel(sequelize, Sequelize);
 
-const Director = directorModel(sequelize,Sequelize);
-const Genre = genreModel(sequelize,Sequelize);
-const Movie = movieModel(sequelize,Sequelize);
-
-//un genero puede tener muchas películas
+// Un genero puede tener muchas peliculas
 Genre.hasMany(Movie, {as:'movies'});
 
-//una película tiene un género
-Movie.belongsTo(Genre,{as: 'genre'});
+// Un pelicula tiene un genero
+Movie.belongsTo(Genre, {as:'genre'});
 
+// Un director puede tener muchas peliculas
+Director.hasMany(Movie, {as:'movies'});
 
-//un director puede tener muchas películas
-Director.hasMany(Movie, {as: 'movies'});
-
-//una película tiene un director
-
+// Una pelicula tiene un director
 Movie.belongsTo(Director, {as: 'director'});
 
+// Un actor participa en muchas peliculas
+MovieActor.belongsTo(Movie, {foreingKey: 'movieId'});
 
-//sync lo que hace es sincronisa el modelo a la base  de datos,
-sequelize.sync({
-    force:true //el force elimina lo que está y lo vuelve a construir de acuerdo al modelo, se usa al inicio del proyecto
-                //pero ya en producción se usan migraciones.
-}).then(()=>{
-    console.log('Base de datos actualizada.');
+// En una pelicula participan muhos actores
+MovieActor.belongsTo(Actor, {foreingKey: 'actorId'});
+
+// Una pelicula tiene varias copias
+Movie.hasMany(Copy, {as:'copies'});
+
+// Una copia tiene una pelicula
+Copy.belongsTo(Movie, {as:'movie'});
+
+// Una copia tiene muchas reservas
+Copy.hasMany(Booking,{as:'bookings'});
+
+// Una reserva tiene una copia
+Booking.belongsTo(Copy, {as:'copy'});
+
+// Un miembro puede tener muchas reservas
+Member.hasMany(Booking, {as:'bookings'});
+
+// Una reserva tiene un miembro
+Booking.belongsTo(Member, {as:'members'});
+
+Movie.belongsToMany(Actor, {
+    foreingKey: 'actorId',
+    as: 'actors',
+    through: 'movies_actors' // por al tabla
 });
 
-module.exports = {Director,Genre,Movie};
+Actor.belongsToMany(Movie,{
+    foreingKey: 'movieId',
+    as: 'movies',
+    through: 'movies_actors'
+});
+
+sequelize.sync({ // Solo para el desarrollo
+    force: true
+}).then(() => {
+    console.log('Base de datos sincronizada');
+});
+
+module.exports = { Director, Genre, Movie, Actor, Member };

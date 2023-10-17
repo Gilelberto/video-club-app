@@ -3,6 +3,8 @@ const router = express.Router();
 const controller = require('../controllers/movies');
 
 /* GET users listing. */
+router.patch('/actor', controller.addActor); //este arriba porque los que esperan algo : hacen match con lo que caiga, hay que darle prioridad
+
 router.post('/', controller.create);
 
 router.get('/', controller.list); //separamos el controlador del enrutador para que cada cosa haga sólo lo que debe y nada más
