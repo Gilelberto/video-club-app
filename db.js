@@ -15,9 +15,11 @@ const copyModel = require('./models/copy');
     4) Objeto de configuracion ORM
 */
 
+
 const sequelize = new Sequelize('video-club', 'root', 'abcd1234', {
-    host: 'localhost',
-    dialect: 'mysql'
+  host: 'localhost',
+  dialect: 'mysql',
+  logging: false, // Establece el nivel de registro en "false" para deshabilitar los registros
 });
 
 const Director = directorModel(sequelize, Sequelize);
