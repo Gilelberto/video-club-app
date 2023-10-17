@@ -3,12 +3,27 @@ const express = require('express');
 const path = require('path');
 const cookieParser = require('cookie-parser');
 const logger = require('morgan');
+const mongoose = require('mongoose');
 
 const indexRouter = require('./routes/index');
 const usersRouter = require('./routes/users');
 const directorsRouter = require('./routes/directors');
 
 const app = express();
+db.on('open', ()=>{
+  console.log("Conexion OK");
+});
+db.on('error',()=>{
+  console.log("Conexion NO OK")
+})
+
+
+
+//mongodb://<dbuser>?:<dbPassword>?@<url>:<port>/<dbName> elementos para conectarnos a base de datos de mongoDB
+const url = "mongodb://localhot27017/video-club"
+mongoose.connection(url);
+
+const db = mongoose.connect;
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
