@@ -5,6 +5,23 @@ const expect = require("chai").expect;
 //describe es lo que uso para agrupar mis escenarios. recibe un string que es la descripción del escenario y 
 //una función para definir los casos de prueba.
 describe("As a browser I make all REST request to /directors", function () {
+    
+    // Bloque "before" se ejecuta una vez antes de todas las pruebas en este describe
+    before(() => {
+        // Realiza tareas de configuración inicial aquí
+        
+    });
+
+    // Bloque "beforeEach" se ejecuta antes de cada prueba en este describe
+    beforeEach(() => {
+    // Realiza tareas de configuración antes de cada prueba aquí
+    });
+
+
+
+
+
+
   //it es de mocha y se usa para describir un escenario de prueba único, cada caso de prueba ps
 
   //como describe, primero se describe el caso el segundo argumento función con el código
