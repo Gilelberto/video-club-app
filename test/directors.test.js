@@ -5,7 +5,7 @@ const expect = require("chai").expect;
 //describe es lo que uso para agrupar mis escenarios. recibe un string que es la descripción del escenario y 
 //una función para definir los casos de prueba.
 describe("As a browser I make all REST request to /directors", function () {
-    
+
     // Bloque "before" se ejecuta una vez antes de todas las pruebas en este describe
     before(() => {
         // Realiza tareas de configuración inicial aquí
@@ -16,11 +16,6 @@ describe("As a browser I make all REST request to /directors", function () {
     beforeEach(() => {
     // Realiza tareas de configuración antes de cada prueba aquí
     });
-
-
-
-
-
 
   //it es de mocha y se usa para describir un escenario de prueba único, cada caso de prueba ps
 
@@ -120,7 +115,7 @@ describe("As a browser I make all REST request to /directors", function () {
     const response = await request(app).delete("/directors/1");
 
     expect(response.status).to.eql(200); 
-    expect(response.body).to.be.an('object');
+    expect(response.body).to.be.an('number');
 
     //eql verifica que el contenido sean iguales
     //equal es una comparación profunda === no sólo verifica que el contenido sea el mismo, también el tipo
@@ -128,5 +123,14 @@ describe("As a browser I make all REST request to /directors", function () {
   });
 
 
+    // Bloque "after" se ejecuta una vez después de todas las pruebas en este describe
+  after(() => {
+    // Realiza tareas de limpieza o cierre de recursos aquí
+  });
+
+  // Bloque "afterEach" se ejecuta después de cada prueba en este describe
+  afterEach(() => {
+    // Realiza tareas de limpieza después de cada prueba aquí
+  });
 
 });

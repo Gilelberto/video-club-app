@@ -59,7 +59,7 @@ function update (req, res, next) {  //el update actualiza si me falta un valor d
 }
 
 function destroy (req, res, next) {
-    const id = request.params.id;
+    const id = req.params.id;
 
     //Destroy con sequelize
     Director.destroy({
